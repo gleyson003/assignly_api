@@ -1,15 +1,36 @@
 const express = require('express');
+const mongoose = require('mongoose');
 const app = express();
 
-app.use(express.json()); // Permite trabalhar com JSON no body das requisições
+const cors = require('cors');
+const swaggerSetup = require("./swagger");
 
-// Rota inicial
+const usersRoutes = require('./routes/users');
+const authRoutes = require("./routes/auth");
+
+require('dotenv').config();
+app.use(express.json());
+app.use(cors());
+
+swaggerSetup(app);
+
+// Main Route
 app.get('/', (req, res) => {
-    res.send('Bem-vindo à API Node.js!');
+    res.send('Welcome to Assignly API!');
 });
 
-// Definir a porta do servidor
+// Routes
+app.use('/users', usersRoutes);
+app.use("/auth", authRoutes);
+
+//MongoDB conection 
+mongoose.connect(process.env.MONGO_URI)
+.then(() => console.log("🔥 MongoDB conecteded"))
+.catch(err => console.error("Error to conecting MongoDB:", err));
+
+
+// PORT Listing
 const PORT = 3000;
 app.listen(PORT, () => {
-    console.log(`Servidor rodando em http://localhost:${PORT}`);
+    console.log(`Server stating http://localhost:${PORT}`);
 });

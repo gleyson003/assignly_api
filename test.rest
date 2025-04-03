@@ -1,0 +1,32 @@
+### Test GET
+GET http://localhost:3000/users/Gle
+Content-Type: application/json
+
+### Test GET single
+GET http://localhost:3000/pets/67dde9510f2121f14dade951
+Content-Type: application/json
+
+### Teste POST
+POST http://localhost:3000/pets
+Content-Type: application/json
+
+{
+  "name": "zoe",
+  "favoriteFood": "wet food",
+  "birthday": "2022-02-07",
+  "tutor_id": "67ccb93fc977bdb9c1ff37d3"
+}
+
+### Test PUT
+PUT http://localhost:3000/pets/67ddddeea1af54163f62b76e
+Content-Type: application/json
+
+{
+    "name": "Mailow",
+    "favoriteFood": "Chicken",
+    "birthday": "2016-08-01"
+}
+
+### Test DELETE
+DELETE http://localhost:3000/pets/67dde9510f2121f14dade951
+Content-Type: application/json
