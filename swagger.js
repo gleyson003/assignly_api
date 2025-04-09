@@ -22,9 +22,13 @@ const swaggerOptions = {
           security: [{ bearerAuth: [] }],
         servers: [
             {
-                url: 'http://localhost:3000',
+                url: 'https://assignly-api.onrender.com',
                 description: 'Local server',
             },
+            {
+                url: 'http://localhost:3000',
+                description: 'Local server',
+            }
         ],
     },
     apis: ['./routes/*.js'],

@@ -17,7 +17,11 @@ swaggerSetup(app);
 
 // Main Route
 app.get('/', (req, res) => {
-    res.send('Welcome to Assignly API!');
+    res.send(`
+        <h1>Welcome to Assignly API!</h1>
+        <p>Access the API documentation through the link:</p>
+        <a href="/api-docs" target="_blank">📄 API documentation</a>
+    `);
 });
 
 // Routes
