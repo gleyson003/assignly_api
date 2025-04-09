@@ -1,9 +1,53 @@
 const express = require('express');
-const usersController = require('../controllers/users');
-const asyncHandler = require('../utils/asyncHandler');
-const router = express.Router();
 const authMiddleware = require('../middlewares/auth');
+const asyncHandler = require('../utils/asyncHandler');
 
+const usersController = require('../controllers/users');
+const router = express.Router();
+
+
+/**
+ * @swagger
+ * /users/login:
+ *   post:
+ *     summary: User login
+ *     description: Authenticates a user and returns a JWT token.
+ *     tags:
+ *       - Logins 
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 format: email
+ *                 description: The email of the user.
+ *               password:
+ *                 type: string
+ *                 description: The password of the user.
+ *     responses:
+ *       200:
+ *         description: Login successful.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Login successful!
+ *                 token:
+ *                   type: string
+ *                   description: JWT token for authentication.
+ *       401:
+ *         description: Invalid email or password.
+ *       500:
+ *         description: Internal server error.
+*/
+router.post('/login', asyncHandler(usersController.loginUser));
 
 /**
  * @swagger
@@ -11,6 +55,8 @@ const authMiddleware = require('../middlewares/auth');
  *   get:
  *     summary: Get authenticated user data
  *     description: Retrieve the currently logged-in user's data.
+ *     tags:
+ *       - Users
  *     security:
  *       - bearerAuth: []
  *     responses:
@@ -19,19 +65,7 @@ const authMiddleware = require('../middlewares/auth');
  *       401:
  *         description: Unauthorized, token required.
 */
-router.get('/me', authMiddleware, async (req, res) => {
-    try {
-        const user = await db.collection('users').findOne({ _id: new ObjectId(req.user.userId) });
-
-        if (!user) {
-        return res.status(404).json({ message: 'User not found' });
-        }
-
-        res.json({ user });
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-});
+router.get('/me', authMiddleware, usersController.currentUser);
 
 /**
  * @swagger
@@ -39,6 +73,8 @@ router.get('/me', authMiddleware, async (req, res) => {
  *   get:
  *     summary: Get a list of users
  *     description: Retrieve all users from the database.
+ *     tags:
+ *       - Users
  *     responses:
  *       200:
  *         description: Users list retrieved successfully.
@@ -51,6 +87,8 @@ router.get('/', authMiddleware, asyncHandler(usersController.getAll));
  *   get:
  *     summary: Get an array of users by name
  *     description: Retrieve a list of users whose first name matches the provided value (case-insensitive).
+ *     tags:
+ *       - Users
  *     parameters:
  *       - in: path
  *         name: name
@@ -103,6 +141,8 @@ router.get('/:name', asyncHandler(usersController.getByName));
  *   post:
  *     summary: Create a new user
  *     description: Adds a new user to the database.
+ *     tags:
+ *       - Users
  *     requestBody:
  *       required: true
  *       content:
@@ -152,6 +192,8 @@ router.post('/', authMiddleware, asyncHandler(usersController.createUser));
  *   put:
  *     summary: Uptade user by ID
  *     description: Modifies the data of an existing user in the database.
+ *     tags:
+ *       - Users
  *     parameters:
  *       - in: path
  *         name: id
@@ -221,6 +263,8 @@ router.put('/:id', asyncHandler(usersController.updateUser));
  *   delete:
  *     summary: Delete a user by ID
  *     description: Permanently removes a user from the database.
+ *     tags:
+ *       - Users
  *     parameters:
  *       - in: path
  *         name: id
@@ -252,6 +296,8 @@ router.delete('/:id', authMiddleware, asyncHandler(usersController.dropUser));
  *   patch:
  *     summary: Toggle the active status of a user
  *     description: Changes the user's active status between true and false.
+ *     tags:
+ *       - Users
  *     parameters:
  *       - in: path
  *         name: id
@@ -286,6 +332,8 @@ router.patch('/:id/toggle-active', asyncHandler(usersController.toggleActiveUser
  *   patch:
  *     summary: Toggle the deleted status of a user
  *     description: Marks the user as deleted or restores them.
+ *     tags:
+ *       - Users
  *     parameters:
  *       - in: path
  *         name: id
@@ -314,46 +362,6 @@ router.patch('/:id/toggle-active', asyncHandler(usersController.toggleActiveUser
 */
 router.patch('/:id/toggle-deleted', asyncHandler(usersController.toggleDeletedUser));
 
-/**
- * @swagger
- * /users/login:
- *   post:
- *     summary: User login
- *     description: Authenticates a user and returns a JWT token.
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               email:
- *                 type: string
- *                 format: email
- *                 description: The email of the user.
- *               password:
- *                 type: string
- *                 description: The password of the user.
- *     responses:
- *       200:
- *         description: Login successful.
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: Login successful!
- *                 token:
- *                   type: string
- *                   description: JWT token for authentication.
- *       401:
- *         description: Invalid email or password.
- *       500:
- *         description: Internal server error.
-*/
-router.post('/login', asyncHandler(usersController.loginUser));
 
 
 module.exports = router;

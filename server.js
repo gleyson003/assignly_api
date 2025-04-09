@@ -6,6 +6,7 @@ const cors = require('cors');
 const swaggerSetup = require("./swagger");
 
 const usersRoutes = require('./routes/users');
+const userTypesRoutes = require('./routes/user_types')
 const authRoutes = require("./routes/auth");
 
 require('dotenv').config();
@@ -21,6 +22,7 @@ app.get('/', (req, res) => {
 
 // Routes
 app.use('/users', usersRoutes);
+app.use('/user-types', userTypesRoutes);
 app.use("/auth", authRoutes);
 
 //MongoDB conection 
@@ -32,5 +34,5 @@ mongoose.connect(process.env.MONGO_URI)
 // PORT Listing
 const PORT = 3000;
 app.listen(PORT, () => {
-    console.log(`Server stating http://localhost:${PORT}`);
+    console.log(`Server stating http://localhost:${PORT}/api-docs`);
 });

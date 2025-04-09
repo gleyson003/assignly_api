@@ -6,9 +6,9 @@ const swaggerOptions = {
     definition: {
         openapi: '3.0.0',
         info: {
-            title: 'API Assignly',
+            title: 'API Assignly - Portfolio Builder',
             version: '1.0.0',
-            description: 'API Assignly user Swagger documentation',
+            description: 'API Assignly user Swagger documentation. \nThis is an api server for a portfolio builer website',
         },
         components: {
             securitySchemes: {

@@ -211,6 +211,19 @@ const loginUser = async (req, res) => {
   }
 };
 
+const currentUser = async (req, res) => {
+  try {
+    const user = await db.collection('users').findOne({ _id: new ObjectId(req.user.userId) });
+
+    if (!user) {
+    return res.status(404).json({ message: 'User not found' });
+    }
+
+    res.json({ user });
+  } catch (error) {
+      res.status(500).json({ error: error.message });
+  }
+};
 
 module.exports = { 
     getAll,
@@ -220,5 +233,6 @@ module.exports = {
     dropUser,
     toggleActiveUser,
     toggleDeletedUser,
-    loginUser
+    loginUser,
+    currentUser
   };
