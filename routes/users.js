@@ -221,6 +221,9 @@ router.post('/', authMiddleware, asyncHandler(usersController.createUser));
  *                 type: string
  *                 format: email
  *                 description: The email of the user.
+ *               password:
+ *                 type: string
+ *                 description: The user's password.
  *               birthdat:
  *                 type: string
  *                 format: date
