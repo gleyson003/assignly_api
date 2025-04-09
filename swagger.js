@@ -23,7 +23,7 @@ const swaggerOptions = {
         servers: [
             {
                 url: 'https://assignly-api.onrender.com',
-                description: 'Local server',
+                description: 'Prod server',
             },
             {
                 url: 'http://localhost:3000',
