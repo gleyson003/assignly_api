@@ -1,4 +1,4 @@
-const User = require('../models/User');
+const User = require('../models/user');
 const mongoose = require('mongoose');
 const ObjectId = require('mongodb').ObjectId;
 const db = mongoose.connection.useDb('assignly');
