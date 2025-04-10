@@ -110,7 +110,7 @@ router.post('/', authMiddleware, asyncHandler(userTypesController.createUserType
  *       500:
  *         description: Internal server error.
 */
-router.put('/:id', asyncHandler(userTypesController.updateUserTypes));
+router.put('/:id', authMiddleware, asyncHandler(userTypesController.updateUserTypes));
 
 /**
  * @swagger

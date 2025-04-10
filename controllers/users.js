@@ -83,13 +83,16 @@ const updateUser = async (req, res) => {
     if (updateData.email && updateData.email !== existingUser.email) {
       const emailExists = await db.collection('users').findOne({ email: updateData.email });
       if (emailExists) {
-        return res.status(400).json({ message: 'Email já cadastrado!' });
+        return res.status(400).json({ message: 'Email already registered!' });
       }
     }
 
     // Password bcrypt
-    const salt = await bcrypt.genSalt(10);
-    userData.password = await bcrypt.hash(userData.password, salt);
+    if (updateData.password) {
+      const salt = await bcrypt.genSalt(10);
+      updateData.password = await bcrypt.hash(updateData.password, salt);
+    }
+    
 
     // Update user
     const updatedUser = await db.collection('users').findOneAndUpdate(

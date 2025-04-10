@@ -184,7 +184,7 @@ router.get('/:name', asyncHandler(usersController.getByName));
  *       500:
  *         description: Internal server error.
 */
-router.post('/', authMiddleware, asyncHandler(usersController.createUser));
+router.post('/', asyncHandler(usersController.createUser));
 
 /**
  * @swagger
