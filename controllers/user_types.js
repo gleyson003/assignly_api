@@ -2,8 +2,6 @@ const UserType = require('../models/user_types');
 const mongoose = require('mongoose');
 const ObjectId = require('mongodb').ObjectId;
 const db = mongoose.connection.useDb('assignly');
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
 
 
 // Get an array off all user-types
@@ -13,7 +11,7 @@ const getAll = async (req, res, next) => {
     res.setHeader('Content-Type', 'application/json');
     res.status(200).json(result);
   } catch (error) {
-    res.status(500).json({ error: `Error fetching users: ${error.message}` });
+    res.status(500).json({ error: `Error fetching user-types: ${error.message}` });
   }
 };
 
@@ -22,17 +20,17 @@ const getByName = async (req, res, next) => {
   try {
     const name = req.params.name;
 
-    const userTypes = await db.collection('user_types').find({
+    const userType = await db.collection('user_types').find({
       name: { $regex: new RegExp(name, 'i') },
       deleted: false
     }).toArray();
 
-    if (userTypes.length === 0) {
+    if (userType.length === 0) {
       return res.status(404).json({ message: 'User-type not founded!' });
     }
 
     res.setHeader('Content-Type', 'application/json');
-    res.status(200).json(userTypes);
+    res.status(200).json(userType);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -58,7 +56,7 @@ const createUserTypes = async (req, res) => {
 
     res.status(201).json({
       message: 'User-type creating sucessfully!',
-      user: savedUserType
+      userType: savedUserType
     });
   } catch (error) {
     res.status(400).json({ error: error.message });
@@ -73,7 +71,7 @@ const updateUserTypes = async (req, res) => {
     // Validate user by id
     const existingUserTypeId = await db.collection('user_types').findOne({ _id: new ObjectId(id) });
     if (!existingUserTypeId) {
-      return res.status(404).json({ message: 'User not founded!' });
+      return res.status(404).json({ message: 'User-type not founded!' });
     }
 
     // Validation user-type name
@@ -82,7 +80,7 @@ const updateUserTypes = async (req, res) => {
     });
 
     if (existingUserTypeName) {
-      return res.status(400).json({ message: "The user type name is already registered!" });
+      return res.status(400).json({ message: "The user-type's name is already registered!" });
     }
 
     // Update user
@@ -139,7 +137,7 @@ const activeUserTypes = async (req, res) => {
     );
 
     res.status(200).json({
-      message: `User ${updatedUserType.active ? 'activated' : 'deactivated'} successfully!`,
+      message: `User-type ${updatedUserType.active ? 'activated' : 'deactivated'} successfully!`,
       userType: updatedUserType
     });
   } catch (error) {
@@ -167,7 +165,7 @@ const deletedUserTypes = async (req, res) => {
 
     res.status(200).json({
       message: `User ${updatedUserType.deleted ? 'marked as deleted' : 'restored'} successfully!`,
-      user: updatedUserType
+      userType: updatedUserType
     });
   } catch (error) {
     res.status(500).json({ error: `Error updating deleted status: ${error.message}` });

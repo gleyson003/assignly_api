@@ -6,7 +6,8 @@ const cors = require('cors');
 const swaggerSetup = require("./swagger");
 
 const usersRoutes = require('./routes/users');
-const userTypesRoutes = require('./routes/user_types')
+const userTypesRoutes = require('./routes/user_types');
+const taskTypesRoutes = require('./routes/task_types');
 const authRoutes = require("./routes/auth");
 
 require('dotenv').config();
@@ -27,6 +28,7 @@ app.get('/', (req, res) => {
 // Routes
 app.use('/users', usersRoutes);
 app.use('/user-types', userTypesRoutes);
+app.use('/task-types', taskTypesRoutes);
 app.use("/auth", authRoutes);
 
 //MongoDB conection 
