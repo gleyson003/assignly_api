@@ -61,6 +61,9 @@ router.get('/:name', asyncHandler(taskTypesController.getByName));
  *               name:
  *                 type: string
  *                 description: The name of the task type.
+ *               duration:
+ *                 type: string
+ *                 description: The duration in time of this task-type.
  *               description:
  *                 type: string
  *                 description: A brief description of the task type.
@@ -97,6 +100,8 @@ router.post('/', authMiddleware, asyncHandler(taskTypesController.createTaskType
  *             type: object
  *             properties:
  *               name:
+ *                 type: string
+ *               duration:
  *                 type: string
  *               description:
  *                 type: string

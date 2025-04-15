@@ -7,6 +7,7 @@ const swaggerSetup = require("./swagger");
 
 const usersRoutes = require('./routes/users');
 const userTypesRoutes = require('./routes/user_types');
+const tasksRoutes = require('./routes/tasks');
 const taskTypesRoutes = require('./routes/task_types');
 const authRoutes = require("./routes/auth");
 
@@ -28,6 +29,7 @@ app.get('/', (req, res) => {
 // Routes
 app.use('/users', usersRoutes);
 app.use('/user-types', userTypesRoutes);
+app.use('/tasks', tasksRoutes);
 app.use('/task-types', taskTypesRoutes);
 app.use("/auth", authRoutes);
 
